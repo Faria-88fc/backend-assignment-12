@@ -35,9 +35,9 @@ async function run() {
         });
 
 
-         // get products api
-         app.get('/products', async (req, res) => {
-            const cursor = productsCollection.find({"color":"white"});
+        // get products api
+        app.get('/products', async (req, res) => {
+            const cursor = productsCollection.find({ "color": "white" });
             const products = await cursor.toArray();
             res.send(products);
         });
@@ -65,9 +65,9 @@ async function run() {
             const review = req.body;
             const result = await reviewsCollection.insertOne(review);
             res.json(result);
-        });    
+        });
 
-        
+
         // get review api
         app.get('/reviews', async (req, res) => {
             const cursor = reviewsCollection.find({});
@@ -84,30 +84,31 @@ async function run() {
         });
 
 
-        app.put('/users',async(req,res)=>{
+        app.put('/users', async (req, res) => {
             const user = req.body;
-            const filter = {email:user.email};
-            const updateDoc = {$set:{role:'admin'}};
-            const result = await usersCollection.updateOne(filter,updateDoc);
+            console.log(user);
+            const filter = { email: user.email };
+            const updateDoc = { $set: { role: 'admin' } };
+            const result = await usersCollection.updateOne(filter, updateDoc);
             res.json(result);
-            // console.log(result)
+
         })
 
-        app.get('/users/:email', async(req,res)=>{
-           const email = req.params.email;
-           const query = {email:email};
-           const user = await usersCollection.findOne(query);
-           let isAdmin = false;
-           if (user?.role === 'admin'){
-               isAdmin= true;
-           }
-           res.json({admin:isAdmin});
+        app.get('/users/:email', async (req, res) => {
+            const email = req.params.email;
+            const query = { email: email };
+            const user = await usersCollection.findOne(query);
+            let isAdmin = false;
+            if (user?.role === 'admin') {
+                isAdmin = true;
+            }
+            res.json({ admin: isAdmin });
         })
 
 
 
 
-        
+
         // add orders api
         app.post('/orders', async (req, res) => {
             const order = req.body;
